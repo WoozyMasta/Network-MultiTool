@@ -19,7 +19,7 @@ spec:
         effect: NoSchedule
       containers:
       - name: network-multitool
-        image: praqma/network-multitool
+        image: woozymasta/network-multitool
         resources:
           requests:
             cpu: "50m"

@@ -1,6 +1,6 @@
 FROM alpine:3.12
 
-MAINTAINER Kamran Azeem & Henrik Høegh (kaz@praqma.net, heh@praqma.net)
+LABEL maintainer="kagbe.leviy@gmail.com"
 
 EXPOSE 80 443
 
@@ -9,18 +9,18 @@ EXPOSE 80 443
 RUN     apk update \
     &&  apk add apache2-utils bash bind-tools busybox-extras curl ethtool git \
                 iperf3 iproute2 iputils jq lftp mtr mysql-client \
-                netcat-openbsd net-tools nginx nmap openssh-client openssl \
-	            perl-net-telnet postgresql-client procps rsync socat tcpdump tshark wget \
+                netcat-openbsd net-tools nginx nmap nmap-scripts nmap-ncat \
+                openssh-client openssl perl-net-telnet postgresql-client procps \
+                rsync socat tcpdump tshark wget kafkacat fping drill \
+    &&  mkdir /data \
+    &&  chmod 777 /data \
     &&  mkdir /certs \
     &&  chmod 700 /certs \
     &&  openssl req \
         -x509 -newkey rsa:2048 -nodes -days 3650 \
         -keyout /certs/server.key -out /certs/server.crt -subj '/CN=localhost'
 
-
-# Copy a simple index.html to eliminate text (index.html) noise which comes with default nginx image.
-# (I created an issue for this purpose here: https://github.com/nginxinc/docker-nginx/issues/234)
-COPY index.html /usr/share/nginx/html/
+COPY index.html /data/
 
 # Copy a custom nginx.conf with log files redirected to stderr and stdout
 COPY nginx.conf /etc/nginx/nginx.conf
