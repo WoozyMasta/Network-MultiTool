@@ -1,12 +1,13 @@
 ---
 apiVersion: apps/v1
-kind: DaemonSet
+kind: Deployment
 metadata:
   name: multitool
   labels:
     tier: node
     app: multitool
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app: multitool
@@ -16,7 +17,6 @@ spec:
         tier: node
         app: multitool
     spec:
-      hostNetwork: true
       tolerations:
       - operator: Exists
         effect: NoSchedule
@@ -47,6 +47,7 @@ kind: Service
 metadata:
   name: multitool
   labels:
+    tier: node
     app: multitool
 spec:
   ports:
