@@ -1,24 +1,28 @@
-apiVersion: extensions/v1beta1
+---
+apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  name: network-multitool
+  name: multitool
   namespace: kube-system
   labels:
     tier: node
-    app: network-multitool
+    app: multitool
 spec:
+  selector:
+    matchLabels:
+      app: multitool
   template:
     metadata:
       labels:
         tier: node
-        app: network-multitool
+        app: multitool
     spec:
       hostNetwork: true
       tolerations:
       - operator: Exists
         effect: NoSchedule
       containers:
-      - name: network-multitool
+      - name: multitool
         image: woozymasta/network-multitool
         resources:
           requests:
@@ -27,7 +31,32 @@ spec:
           limits:
             cpu: "50m"
             memory: "50Mi"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 80
+            - name: https
+              containerPort: 443
         securityContext:
           runAsUser: 0
           capabilities:
             add: ["NET_ADMIN"]
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: multitool
+  labels:
+    app: multitool
+spec:
+  ports:
+  - port: 80
+    name: multitool-http
+    targetPort: http
+  - port: 443
+    name: multitool-https
+    targetPort: https
+  type: ClusterIP
+  selector:
+    app: multitool
