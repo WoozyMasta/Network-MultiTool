@@ -1,17 +1,18 @@
 # Network-Multitool
 This is a multitool for container/network testing and troubleshooting, based on Alpine Linux. The container image contains lots of tools, as well as nginx web server, which listens on port 80 and 443 by default. The web server helps to run this container-image in a straight-forward way, so you can simply `exec` into the container and use various tools.
 
+It's for of [https://github.com/Praqma/Network-MultiTool](https://github.com/Praqma/Network-MultiTool) wit some additions.
 
 ## Downloadable from Docker Hub: 
-* [https://hub.docker.com/r/praqma/network-multitool/](https://hub.docker.com/r/praqma/network-multitool/)  (Automated Build)
+* [https://hub.docker.com/r/woozymasta/network-multitool/](https://hub.docker.com/r/woozymasta/network-multitool/)  (Automated Build)
 
 # Tools included:
 * apk package manager
 * Nginx Web Server (port 80, port 443) - customizable ports!
 * wget, curl, iperf3
-* dig, nslookup
+* dig, nslookup, drill
 * ip, ifconfig, ethtool, mii-tool, route
-* ping, nmap, arp, arping
+* ping, nmap, arp, arping, fping
 * awk, sed, grep, cut, diff, wc, find, vi editor
 * ps, netstat, ss
 * gzip, cpio
@@ -21,6 +22,7 @@ This is a multitool for container/network testing and troubleshooting, based on 
 * netcat (nc), socat
 * ApacheBench (ab)
 * mysql & postgresql client
+* kafkacat
 * jq
 * git
 
@@ -40,10 +42,10 @@ CONTAINER ID        IMAGE                     COMMAND                  CREATED  
 6e8b6ed8bfa6        nginx                     "nginx -g 'daemon of…"   56 minutes ago      Up 56 minutes       80/tcp                                                            nginx
 
 [kamran@kworkhorse network-multitool]$ curl localhost:1180
-Praqma Network MultiTool (with NGINX) - 4636efd4660c - 172.17.0.3/16
+woozymasta Network MultiTool (with NGINX) - 4636efd4660c - 172.17.0.3/16
 
 [kamran@kworkhorse network-multitool]$ curl -k https://localhost:1443
-Praqma Network MultiTool (with NGINX) - 4636efd4660c - 172.17.0.3/16
+woozymasta Network MultiTool (with NGINX) - 4636efd4660c - 172.17.0.3/16
 [kamran@kworkhorse network-multitool]$ 
 ```  
 
@@ -59,12 +61,12 @@ Well, normally, if a container does not run a daemon/service, then running it (t
 
 This helps when you are using kubernetes. You simply execute:
 ```
-$ kubectl run multitool --image=praqma/network-multitool --replicas=1
+$ kubectl run multitool --image=woozymasta/network-multitool --replicas=1
 ```
 
 This also helps you when you are using Docker. You simply execute:
 ```
-$ docker run  -d praqma/network-multitool
+$ docker run  -d woozymasta/network-multitool
 ```
 
 The multitool container starts as web server. Then, you simply connect to it using:
