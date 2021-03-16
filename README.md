@@ -23,7 +23,7 @@ It's for of [https://github.com/Praqma/Network-MultiTool](https://github.com/Pra
 * ApacheBench (ab)
 * mysql & postgresql client
 * kafkacat
-* jq
+* jq, yq
 * git
 
 
